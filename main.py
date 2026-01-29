@@ -80,12 +80,14 @@ async def main():
             markdown_generator=markdown_generator,
             exclude_all_images=True,
             excluded_tags=["header", "footer", "nav"],
-            # url_matcher="*.pdf",
-            pdf=True,
             js_code=js_code,
-            wait_for="css:a.evergreen-news-attachment-PDF:nth-of-type(1)"  # Wait for at least 5 news items
-            # .evergreen-news-content-list:nth-child(5)
-            # .evergreen-news-item:nth-of-type(5)
+            verbose=True,
+            log_console=True,
+            capture_console_messages=True,
+            capture_network_requests=True,
+            wait_for="css:a.evergreen-news-attachment-PDF"  # Wait for at least 5 news items
+            # .evergreen-news-content-list:nth-child(15)
+            # .evergreen-news-item:nth-of-type(15)
         )
 
         result = await crawler.arun(
@@ -112,7 +114,10 @@ async def main():
             else:
                 print("No files downloaded.")
 
+            print(result.console_messages)
+
             # Save to file
+            # result.pdf # set pdf=True in CrawlerRunConfig to enable PDF capture of the web page
             with open("output_crawl4ai.md", "w", encoding="utf-8") as f:
                 f.write(result.markdown)
         else:
@@ -120,7 +125,7 @@ async def main():
 
 
 # def main():
-#     print("Hello from poc-weasyprint!")
+#     print("Hello from poc-ai-web-context!")
 
 
 if __name__ == "__main__":
